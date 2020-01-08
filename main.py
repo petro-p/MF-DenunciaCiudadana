@@ -1,9 +1,18 @@
+import werkzeug
 from flask import Flask, render_template, redirect, session, request
 from flask import url_for
+import os
+from werkzeug.utils import secure_filename
 from pymongo import MongoClient
+
+from datetime import datetime
+
+ahora = datetime.now()
+tiempoAhora = ahora.strftime("%d-%m-%Y")
 
 
 app = Flask(__name__)
+app.config["IMAGE_UPLOADS"] = "static/uploaded"
 
 MONGO_URL_ATLAS = 'mongodb+srv://admin:admin123@denuncias-dkzqn.mongodb.net/test?retryWrites=true&w=majority'
 
@@ -77,8 +86,33 @@ def register():
 
 @app.route('/aplicacion', methods=['GET', 'POST'])
 def aplicacion():
+    if request.method == 'POST':
+        texto = request.form['texto']
+
+        file = request.files['imagen']
+        print(file)
+
+        if request.files:
+            image = request.files["imagen"]
+            image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
+
+            print("Imagen guardada con éxito")
+
+        denuncias.insert_one(
+            {'time': tiempoAhora, 'imagen': image.filename, 'texto': texto, 'denunciante': session['dni']})
 
     return render_template('aplicacion.html')
+
+
+@app.route('/visualizar', methods=['GET', 'POST'])
+def visualizar():
+    dni = session['dni']
+    resultados = denuncias.find({'denunciante': dni}, {'_id': 0, 'time': 1, 'imagen': 1, 'texto': 1, 'denunciante': 1})
+    historico = []
+    [historico.append(resultado) for resultado in list(resultados)]
+    print(historico)
+
+    return render_template('visualizar.html', resultados=historico)
 
 
 @app.route('/sign_out', methods=['GET', 'POST'])

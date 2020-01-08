@@ -14,15 +14,15 @@
                     <div class="column is-5-tablet is-6-desktop is-6-widescreen">
                         <h1 class="title">Formulario de envío</h1>
                         <p class="subtitle">Denuncia de {{ session['nombre'].upper() }} con DNI {{ session['dni'] }}</p>
-                        <form action="" class="box" method="POST">
+                        <form action="" class="box" method="POST" enctype=multipart/form-data>
                         <div class="field">
                             <div class="control">
-                            <input type="file" id="email" name="email" placeholder="Dirección de correo electrónico" class="input" required>
+                                <input type="file" id="imagen" name="imagen" placeholder="Dirección de correo electrónico" class="input" required>
                             </div>
                         </div>
                         <div class="field">
                             <div class="control">
-                                <textarea class="textarea" placeholder="Texto de la denuncia, ej: Me han robado el bolso, etc..."></textarea>
+                                <textarea class="textarea" id="texto" name="texto" placeholder="Texto de la denuncia, ej: Me han robado el bolso, etc..."></textarea>
                             </div>
                         </div>
                         <div class="field">
