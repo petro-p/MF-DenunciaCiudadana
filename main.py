@@ -87,34 +87,40 @@ def register():
 
 @app.route('/aplicacion', methods=['GET', 'POST'])
 def aplicacion():
-    print(session['direccion'])
-    if request.method == 'POST':
-        texto = request.form['texto']
+    if 'email' not in session:
+        return redirect(url_for('index'))
+    else:
+        if request.method == 'POST':
+            texto = request.form['texto']
 
-        file = request.files['imagen']
-        print(file)
+            file = request.files['imagen']
+            print(file)
 
-        if request.files:
-            image = request.files["imagen"]
-            image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
+            if request.files:
+                image = request.files["imagen"]
+                image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
 
-            print("Imagen guardada con éxito")
+                print("Imagen guardada con éxito")
 
-        denuncias.insert_one(
-            {'time': tiempoAhora, 'imagen': image.filename, 'texto': texto, 'denunciante': session['dni'], 'localizacion': session['direccion']})
+            denuncias.insert_one(
+                {'time': tiempoAhora, 'imagen': image.filename, 'texto': texto, 'denunciante': session['dni'], 'localizacion': session['direccion']})
+
+            return render_template('aplicacion.html')
 
     return render_template('aplicacion.html')
 
 
 @app.route('/visualizar', methods=['GET', 'POST'])
 def visualizar():
-    dni = session['dni']
-    resultados = denuncias.find({'denunciante': dni}, {'_id': 0, 'time': 1, 'imagen': 1, 'texto': 1, 'denunciante': 1, 'localizacion': 1})
-    historico = []
-    [historico.append(resultado) for resultado in list(resultados)]
-    print(historico)
+    if 'email' not in session:
+        return redirect(url_for('index'))
+    else:
+        dni = session['dni']
+        resultados = denuncias.find({'denunciante': dni}, {'_id': 0, 'time': 1, 'imagen': 1, 'texto': 1, 'denunciante': 1, 'localizacion': 1})
+        historico = []
+        [historico.append(resultado) for resultado in list(resultados)]
 
-    return render_template('visualizar.html', resultados=historico)
+        return render_template('visualizar.html', resultados=historico)
 
 
 @app.route('/sign_out', methods=['GET', 'POST'])
@@ -128,7 +134,6 @@ def sign_out():
 @app.errorhandler(404)
 def page_not_found(error):
     app.logger.info(f"Página no encontrada: {request.url}")
-
     return render_template('404.html'), 404
 
 
