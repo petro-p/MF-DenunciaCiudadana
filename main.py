@@ -37,7 +37,7 @@ def index():
 
             user = {}
             resultados = usuarios.find(
-                {'email': email}, {'_id': 0, 'nombre': 1, 'password': 1, 'email': 1, 'dni': 1})
+                {'email': email}, {'_id': 0, 'nombre': 1, 'password': 1, 'email': 1, 'dni': 1, 'direccion': 1})
             resultados = list(resultados)
 
             for resultado in resultados:
@@ -87,6 +87,7 @@ def register():
 
 @app.route('/aplicacion', methods=['GET', 'POST'])
 def aplicacion():
+    print(session['direccion'])
     if request.method == 'POST':
         texto = request.form['texto']
 
