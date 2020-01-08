@@ -42,7 +42,7 @@ def index():
 
             for resultado in resultados:
                 user.update(
-                    {'email': resultado['email'], 'nombre': resultado['nombre'], 'password': resultado['password'], 'dni': resultado['dni']})
+                    {'email': resultado['email'], 'nombre': resultado['nombre'], 'password': resultado['password'], 'dni': resultado['dni'], 'direccion': resultado['direccion']})
 
             print(user)
 
@@ -52,6 +52,7 @@ def index():
                     session['email'] = email
                     session['nombre'] = user['nombre']
                     session['dni'] = user['dni']
+                    session['direccion'] = user['direccion']
 
                     return redirect(url_for('aplicacion'))
                 else:
@@ -99,7 +100,7 @@ def aplicacion():
             print("Imagen guardada con éxito")
 
         denuncias.insert_one(
-            {'time': tiempoAhora, 'imagen': image.filename, 'texto': texto, 'denunciante': session['dni']})
+            {'time': tiempoAhora, 'imagen': image.filename, 'texto': texto, 'denunciante': session['dni'], 'localizacion': session['direccion']})
 
     return render_template('aplicacion.html')
 
@@ -107,7 +108,7 @@ def aplicacion():
 @app.route('/visualizar', methods=['GET', 'POST'])
 def visualizar():
     dni = session['dni']
-    resultados = denuncias.find({'denunciante': dni}, {'_id': 0, 'time': 1, 'imagen': 1, 'texto': 1, 'denunciante': 1})
+    resultados = denuncias.find({'denunciante': dni}, {'_id': 0, 'time': 1, 'imagen': 1, 'texto': 1, 'denunciante': 1, 'localizacion': 1})
     historico = []
     [historico.append(resultado) for resultado in list(resultados)]
     print(historico)
