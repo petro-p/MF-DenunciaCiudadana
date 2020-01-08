@@ -1,10 +1,53 @@
-{% extends 'base.html' %}
-    {% block title %}
-        {{ super() }}
-        Test
-    {% endblock %}
+{% extends 'layout.html' %}
 
+{% block title %}{{ super() }} - Inicio{% endblock %}
+
+{% block header %}
+    
+{% endblock %}
 
 {% block main %}
-
+    <section class="is-primary is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+                        <h1 class="title">Conéctate</h1>
+                        <form action="" class="box" method="POST">
+                        <div class="field">
+                            <div class="control has-icons-left">
+                            <input type="email" id="email" name="email" placeholder="Dirección de correo electrónico" class="input" required>
+                            <span class="icon is-small is-left">
+                                <i class="fa fa-envelope"></i>
+                            </span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control has-icons-left">
+                            <input type="password" id="password" name="password" placeholder="Contraseña" class="input" required>
+                            <span class="icon is-small is-left">
+                                <i class="fa fa-lock"></i>
+                            </span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <button class="button is-success">
+                                <span class="icon is-small">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </span>
+                                <span>Iniciar sesión</span>
+                            </button>
+                        </div>
+                        <a href="register">Registrarse</a>
+                        </form>
+                        {% if error %}
+                            <div class="notification is-warning">
+                                <button class="delete"></button>
+                                El usuario y/o contraseña introducido es incorrecto.
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
