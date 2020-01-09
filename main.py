@@ -4,6 +4,7 @@ from flask import url_for
 import os
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
+from lib.mongoConnection import comprobarLogin
 
 from datetime import datetime
 
@@ -35,16 +36,7 @@ def index():
             email = request.form['email']
             password = request.form['password']
 
-            user = {}
-            resultados = usuarios.find(
-                {'email': email}, {'_id': 0, 'nombre': 1, 'password': 1, 'email': 1, 'dni': 1, 'direccion': 1})
-            resultados = list(resultados)
-
-            for resultado in resultados:
-                user.update(
-                    {'email': resultado['email'], 'nombre': resultado['nombre'], 'password': resultado['password'], 'dni': resultado['dni'], 'direccion': resultado['direccion']})
-
-            print(user)
+            user = comprobarLogin(email)
 
             if len(user) > 0:
                 if user['email'] == email and user['password'] == password:
