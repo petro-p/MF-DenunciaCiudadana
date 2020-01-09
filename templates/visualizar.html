@@ -3,27 +3,27 @@
 {% block title %}{{ super() }} - Ver{% endblock %}
 
 {% block main %}
-    {% for resultado in resultados %}
-        <div class="card">
-            <div class="card-image">
-                <figure class="image is-4by3">
-                    <img src="static/uploaded/{{resultado['imagen']}}" alt="Placeholder image">
-                </figure>
-            </div>
-            <div class="card-content">
-            <div class="media">
-                <div class="media-content">
-                    <p class="title is-4">{{ session['nombre'].capitalize() }}</p>
-                    <p class="subtitle is-6">{{ resultado['denunciante'] }}</p>
-                </div>
-                </div>
-                <div class="content">
-                    {{ resultado['texto'] }}
-                    <p><strong>Dirección:</strong> {{ resultado['localizacion'] }}</p>
-                    <br>
-                    <span>{{ resultado['time'] }}</span>
-                </div>
+{% for resultado in resultados %}
+<div class="card">
+    <div class="card-image">
+        <figure class="image is-4by3">
+            <img src="static/uploaded/{{resultado['imagen']}}" alt="Placeholder image">
+        </figure>
+    </div>
+    <div class="card-content">
+        <div class="media">
+            <div class="media-content">
+                <p class="title is-4">{{ session['nombre'].capitalize() }}</p>
+                <p class="subtitle is-6">{{ resultado['denunciante'] }}</p>
             </div>
         </div>
-    {% endfor %}
+        <div class="content">
+            {{ resultado['texto'] }}
+            <p><strong>Dirección:</strong> {{ resultado['localizacion'] }}</p>
+            <br>
+            <span>{{ resultado['time'] }}</span>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
