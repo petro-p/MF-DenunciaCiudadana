@@ -12,11 +12,12 @@ denuncias = db['denuncias']
 
 def comprobarLogin(email):
     user = {}
-    resultados = registrados.find(
-        {'email': email}, {'_id': 0, 'nombre': 1, 'password': 1, 'email': 1, 'user_group': 1})
+    resultados = usuarios.find(
+        {'email': email}, {'_id': 0, 'nombre': 1, 'password': 1, 'email': 1, 'dni': 1, 'direccion': 1})
     resultados = list(resultados)
 
     for resultado in resultados:
         user.update(
-            {'email': resultado['email'], 'nombre': resultado['nombre'], 'password': resultado['password'], 'user_group': resultado['user_group']})
+            {'email': resultado['email'], 'nombre': resultado['nombre'], 'password': resultado['password'],
+             'dni': resultado['dni'], 'direccion': resultado['direccion']})
     return user

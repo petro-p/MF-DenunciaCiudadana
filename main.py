@@ -1,16 +1,14 @@
-import werkzeug
+import os
+from datetime import datetime
+
 from flask import Flask, render_template, redirect, session, request
 from flask import url_for
-import os
-from werkzeug.utils import secure_filename
 from pymongo import MongoClient
-from lib.mongoConnection import comprobarLogin
 
-from datetime import datetime
+from lib.mongoConnection import comprobarLogin
 
 ahora = datetime.now()
 tiempoAhora = ahora.strftime("%d-%m-%Y")
-
 
 app = Flask(__name__)
 app.config["IMAGE_UPLOADS"] = "static/uploaded"
@@ -68,7 +66,8 @@ def register():
         usuarioExistente = usuarios.find_one({'nombre': nombre})
 
         if usuarioExistente is None:
-            usuarios.insert_one({'nombre': nombre, 'direccion': direccion, 'dni': dni, 'email': email, 'password': password})
+            usuarios.insert_one(
+                {'nombre': nombre, 'direccion': direccion, 'dni': dni, 'email': email, 'password': password})
             session['email'] = email
             return redirect(url_for('crearficha'))
 
@@ -90,7 +89,8 @@ def aplicacion():
                 image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
 
             denuncias.insert_one(
-                {'time': tiempoAhora, 'imagen': image.filename, 'texto': texto, 'denunciante': session['dni'], 'localizacion': session['direccion']})
+                {'time': tiempoAhora, 'imagen': image.filename, 'texto': texto, 'denunciante': session['dni'],
+                 'localizacion': session['direccion']})
 
             return render_template('aplicacion.html')
 
@@ -103,7 +103,8 @@ def visualizar():
         return redirect(url_for('index'))
     else:
         dni = session['dni']
-        resultados = denuncias.find({'denunciante': dni}, {'_id': 0, 'time': 1, 'imagen': 1, 'texto': 1, 'denunciante': 1, 'localizacion': 1})
+        resultados = denuncias.find({'denunciante': dni},
+                                    {'_id': 0, 'time': 1, 'imagen': 1, 'texto': 1, 'denunciante': 1, 'localizacion': 1})
         historico = []
         [historico.append(resultado) for resultado in list(resultados)]
 
