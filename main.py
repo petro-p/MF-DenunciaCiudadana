@@ -93,14 +93,9 @@ def aplicacion():
         if request.method == 'POST':
             texto = request.form['texto']
 
-            file = request.files['imagen']
-            print(file)
-
             if request.files:
                 image = request.files["imagen"]
                 image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
-
-                print("Imagen guardada con éxito")
 
             denuncias.insert_one(
                 {'time': tiempoAhora, 'imagen': image.filename, 'texto': texto, 'denunciante': session['dni'], 'localizacion': session['direccion']})
