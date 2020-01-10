@@ -12,22 +12,24 @@
                     <p class="subtitle">Denuncia de {{ session['nombre'].upper() }} con DNI {{ session['dni'] }}</p>
                     <form action="" class="box" method="POST" enctype=multipart/form-data>
                         <div class="field">
+                            <label class="label">Foto de la denuncia</label>
                             <div class="control">
                                 <input type="file" id="imagen" name="imagen" class="input" required>
                             </div>
                         </div>
                         <div class="field">
+                            <label class="label">Texto descriptivo de lo ocurrido</label>
                             <div class="control">
                                 <textarea class="textarea" id="texto" name="texto"
-                                          placeholder="Texto de la denuncia, ej: Me han robado el bolso, etc..."></textarea>
+                                          placeholder="Ejemplo: Me han robado el bolso, etc..."></textarea>
                             </div>
                         </div>
                         <div class="field">
                             <button class="button is-success">
                                 <span class="icon is-small">
-                                    <i class="fas fa-sign-in-alt"></i>
+                                    <i class="far fa-plus-square"></i>
                                 </span>
-                                <span>Enviar denuncia</span>
+                                <span>Crear denuncia</span>
                             </button>
                         </div>
                     </form>

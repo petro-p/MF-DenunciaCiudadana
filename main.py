@@ -7,9 +7,6 @@ from pymongo import MongoClient
 
 from lib.mongoConnection import comprobarLogin
 
-ahora = datetime.now()
-tiempoAhora = ahora.strftime("%d-%m-%Y")
-
 app = Flask(__name__)
 app.config["IMAGE_UPLOADS"] = "static/uploaded"
 
@@ -78,6 +75,9 @@ def register():
 
 @app.route('/aplicacion', methods=['GET', 'POST'])
 def aplicacion():
+    ahora = datetime.now()
+    tiempoAhora = ahora.strftime("%d-%m-%Y")
+
     if 'email' not in session:
         return redirect(url_for('index'))
     else:
